@@ -34,7 +34,7 @@ GROUP BY order_status
 ORDER BY total_pedidos DESC;
 ```
 
-**Resultado:** 99.441 pedidos en total. 96.478 pedidos están en estado `delivered`; el resto se reparte entre `shipped`, `canceled`, `unavailable`, `invoiced`, `processing`, `created` y `approved`.
+**Resultado:** 99.441 pedidos en total. 96.478 pedidos están en estado delivered; el resto se reparte entre shipped, canceled, unavailable, invoiced, processing, created y approved.
 
 ### 2. Top 10 productos por precio más alto
 
