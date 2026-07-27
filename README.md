@@ -16,7 +16,7 @@ El objetivo es mostrar manejo de SQL en distintos niveles: `SELECT`/`WHERE`/`GRO
 | `products` | Catálogo de productos |
 | `sellers` | Vendedores |
 | `geolocation` | Coordenadas por código postal |
-| `category_translation` | Traducción de categorías (PT → EN) |
+| `category_translation` | Traducción de categorías |
 
 El archivo `olist.db` incluido en este repo ya tiene los 9 CSV cargados..
 
