@@ -6,8 +6,8 @@ El objetivo es mostrar manejo de SQL en distintos niveles: `SELECT`/`WHERE`/`GRO
 
 ## Estructura de la base
 
-| Tabla | Filas | Descripción |
-|---|---|---|
+| Tabla | Filas 
+|---|---|
 | `orders` | Pedidos — tabla central del modelo |
 | `order_items` | Items vendidos por pedido |
 | `order_payments` | Pagos realizados por pedido |
