@@ -8,31 +8,17 @@ El objetivo es mostrar manejo de SQL en distintos niveles: `SELECT`/`WHERE`/`GRO
 
 | Tabla | Filas | Descripción |
 |---|---|---|
-| `orders` | 99.441 | Pedidos — tabla central del modelo |
-| `order_items` | 112.650 | Ítems vendidos por pedido |
-| `order_payments` | 103.886 | Pagos realizados por pedido |
-| `order_reviews` | 99.224 | Reviews de clientes |
-| `customers` | 99.441 | Clientes |
-| `products` | 32.951 | Catálogo de productos |
-| `sellers` | 3.095 | Vendedores |
-| `geolocation` | 1.000.163 | Coordenadas por código postal |
-| `category_translation` | 71 | Traducción de categorías (PT → EN) |
+| `orders` | Pedidos — tabla central del modelo |
+| `order_items` | Items vendidos por pedido |
+| `order_payments` | Pagos realizados por pedido |
+| `order_reviews` | Reviews de clientes |
+| `customers` | Clientes |
+| `products` | Catálogo de productos |
+| `sellers` | Vendedores |
+| `geolocation` | Coordenadas por código postal |
+| `category_translation` | Traducción de categorías (PT → EN) |
 
-**Modelo relacional:**
-
-```
-customers ──< orders ──< order_items >── products
-                │              │
-                │              └──> sellers
-                ├──< order_payments
-                └──< order_reviews
-
-products ── category_translation (por product_category_name)
-```
-
-> **Nota:** `customer_id` identifica un *pedido*, no una persona — cada compra genera un `customer_id` nuevo. El identificador real de la persona es `customer_unique_id`. Esto es clave para cualquier análisis de clientes recurrentes (ver pregunta 10).
-
-El archivo `olist.db` incluido en este repo ya tiene los 9 CSV cargados e indexados por las columnas de join más usadas (`order_id`, `customer_id`, `product_id`, `seller_id`, zip codes).
+El archivo `olist.db` incluido en este repo ya tiene los 9 CSV cargados..
 
 ## Preguntas y consultas
 
@@ -48,7 +34,7 @@ GROUP BY order_status
 ORDER BY total_pedidos DESC;
 ```
 
-**Resultado:** 99.441 pedidos en total. El 97% (96.478) están en estado `delivered`; el resto se reparte entre `shipped`, `canceled`, `unavailable`, `invoiced`, `processing`, `created` y `approved`.
+**Resultado:** 99.441 pedidos en total. 96.478 pedidos están en estado `delivered`; el resto se reparte entre `shipped`, `canceled`, `unavailable`, `invoiced`, `processing`, `created` y `approved`.
 
 ### 2. Top 10 productos por precio más alto
 
@@ -59,7 +45,7 @@ ORDER BY price DESC
 LIMIT 10;
 ```
 
-**Resultado:** el producto más caro vendido tuvo un precio de **R$ 6.735**, seguido de cerca por otros dos productos por encima de R$ 6.700.
+**Resultado:** el producto más caro vendido tuvo un precio de R$ 6.735, seguido de cerca por otros dos productos por encima de R$ 6.700.
 
 ### 3. Top 10 pedidos por monto pagado
 
@@ -71,7 +57,7 @@ ORDER BY payment_value DESC
 LIMIT 10;
 ```
 
-**Resultado:** el pedido de mayor monto pagado asciende a **R$ 13.664**, muy por encima del segundo (R$ 7.275) — probablemente una compra de varios ítems de alto valor en el mismo pedido.
+**Resultado:** el pedido de mayor monto pagado es de R$ 13.664, muy por encima del segundo (R$ 7.275).
 
 ### 4. Top 10 categorías con mayor facturación
 
@@ -87,7 +73,7 @@ ORDER BY total_facturacion DESC
 LIMIT 10;
 ```
 
-**Resultado:** `health_beauty` lidera con **R$ 1.258.681**, seguida de `watches_gifts` (R$ 1.205.005) y `bed_bath_table` (R$ 1.036.988).
+**Resultado:** `health_beauty` es la categoria con mayor facturacion: R$ 1.258.681, seguida de `watches_gifts` (R$ 1.205.005) y `bed_bath_table` (R$ 1.036.988).
 
 ### 5. Top 10 productos más vendidos por cantidad de unidades
 
@@ -100,7 +86,7 @@ ORDER BY cantidad DESC
 LIMIT 10;
 ```
 
-**Resultado:** el producto más vendido se despachó **527 veces** — un ranking distinto al de facturación, útil para diferenciar "lo que más vende" de "lo que más factura".
+**Resultado:** el producto más vendido, se vendió 527 veces — un ranking distinto al de facturación, diferenciando "lo que más vende" de "lo que más factura".
 
 ### 6. Top 5 ciudades con más pedidos y su ticket promedio
 
@@ -116,7 +102,7 @@ ORDER BY pedidos DESC
 LIMIT 5;
 ```
 
-**Resultado:** São Paulo concentra la mayor cantidad de pedidos (16.221), pero **no** tiene el ticket promedio más alto — Brasília (R$ 161,52) y Río de Janeiro (R$ 161,22) superan a São Paulo (R$ 135,83), lo que sugiere que el volumen no está correlacionado con el valor de compra.
+**Resultado:** São Paulo concentra la mayor cantidad de pedidos (16.221), pero no tiene el ticket promedio más alto. 
 
 ### 7. % de pedidos con comentario de review
 
@@ -136,7 +122,7 @@ FROM total t
 CROSS JOIN con_comentario cc;
 ```
 
-**Resultado:** solo el **41,07%** de los pedidos tiene un comentario de texto en su review (40.836 de 99.441) — la mayoría de los clientes deja una puntuación pero no explica el motivo.
+**Resultado:** solo el 41,07% de los pedidos tiene un comentario de texto en su review (40.836 de 99.441) — la mayoría de los clientes deja una puntuación pero no explica el motivo.
 
 ### 8. Facturación mensual y % de crecimiento mes a mes
 
@@ -158,7 +144,7 @@ FROM facturacion_mensual
 ORDER BY año_mes;
 ```
 
-**Resultado:** la facturación crece de forma sostenida desde fines de 2016 hasta un pico en **noviembre 2017** (R$ 1.010.271, +52% vs. octubre — coincide con el Black Friday brasileño), y se estabiliza en torno a los R$ 850.000–1.000.000 mensuales durante 2018. Los meses de 2016-09 y 2018-09 tienen facturación casi nula por ser los extremos del dataset (arranque y corte de la muestra).
+**Resultado:** la facturación crece de forma sostenida desde fines de 2016 hasta un pico en noviembre 2017, y se estabiliza en torno a los R$ 850.000–1.000.000 mensuales durante 2018. 
 
 ### 9. % de pedidos que llegan tarde, por estado del cliente
 
@@ -185,7 +171,7 @@ JOIN total_demorados td ON tp.customer_state = td.customer_state
 ORDER BY porcentaje DESC;
 ```
 
-**Resultado:** Alagoas (AL) tiene la peor performance logística, con **23,93%** de pedidos tarde, seguido de Maranhão (MA, 19,67%) y Piauí (PI, 15,97%) — los estados del norte/nordeste de Brasil, más alejados de los centros de distribución, concentran los peores tiempos de entrega.
+**Resultado:** Alagoas (AL) tiene la peor performance logística, con 23,93% de pedidos tarde, seguido de Maranhão y Piauí.
 
 ### 10. Primera y última compra por cliente, y días entre ambas
 
@@ -202,7 +188,7 @@ HAVING dias > 0
 ORDER BY dias DESC;
 ```
 
-**Resultado:** la gran mayoría de los clientes de Olist compró **una sola vez** (`dias = 0`). El cliente más recurrente del dataset tuvo 633 días entre su primera y su última compra — la recurrencia real es baja, típico de un marketplace con alta proporción de compradores ocasionales.
+**Resultado:** la gran mayoría de los clientes de Olist compró una sola vez. El cliente más recurrente del dataset tuvo 633 días entre su primera y su última compra — la recurrencia real es baja, típico de un marketplace con alta proporción de compradores ocasionales.
 
 ### 11. Ticket promedio y % del total por método de pago
 
@@ -220,12 +206,11 @@ GROUP BY op.payment_type, t.total
 ORDER BY porcentaje DESC;
 ```
 
-**Resultado:** la tarjeta de crédito domina el mix de pagos (78,34% del total, ticket promedio R$ 163,32), seguida por boleto (17,92%). El voucher tiene el ticket promedio más bajo (R$ 65,70), consistente con su uso típico como cupón parcial más que como medio de pago principal.
+**Resultado:** la tarjeta de crédito domina el mix de pagos (78,34% del total), seguida por boleto (17,92%). El voucher tiene el ticket promedio más bajo (R$ 65,70), consistente con su uso típico como cupón parcial más que como medio de pago principal.
 
 ## Herramientas utilizadas
 
 - **SQLite** como motor de base de datos
-- **Python (pandas)** para la carga inicial de los CSV
 - Consultas con `JOIN`, `GROUP BY`, `HAVING`, `CASE WHEN`, subqueries, `CTE` (`WITH`) y funciones de ventana (`LAG() OVER`)
 
 ## Cómo explorar la base
